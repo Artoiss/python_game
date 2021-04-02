@@ -143,7 +143,7 @@ class Map:
                     pygame.draw.rect(self.window, (110, 110, 110), rect, 1)
 
                 # Grid object building and not active.
-                if str(type(j)) == "<class 'building.Building'>" and self.active_building == None:
+                if str(type(j)) == "<class 'building.Building'>":
                     pygame.draw.rect(surface=self.window,
                                      color=(90, 90, 90),
                                      rect=Rect(index_i * self.blockSize + 1,
@@ -163,7 +163,7 @@ class Map:
                                                ))
 
                 # Grid object active building
-                if str(type(j)) == "<class 'building.Building'>" and self.active_building != None:
+                if str(type(j)) == "<class 'building.Building'>" and self.active_building == j:
                     pygame.draw.rect(surface=self.window,
                                      color=(90, 90, 90),
                                      rect=Rect(index_i * self.blockSize + 1,
