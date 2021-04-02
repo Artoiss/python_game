@@ -174,10 +174,11 @@ class Map:
                     x = index_i * self.blockSize
                     y = index_j * self.blockSize
 
+                    # Green color for lines.
                     col = [0, 150, 0]
 
                     # Draw square
                     self.draw_line(x, y, x + self.blockSize, y, col)
                     self.draw_line(x, y + self.blockSize, x, y, col)
-                    self.draw_line(x + self.blockSize, y, x + self.blockSize, y + self.blockSize, col)
-                    self.draw_line(x, y + self.blockSize, x + self.blockSize, y + self.blockSize, col)
+                    self.draw_line(x + self.blockSize - 2, y, x + self.blockSize - 2, y + self.blockSize, col)
+                    self.draw_line(x, y + self.blockSize - 2, x + self.blockSize, y + self.blockSize - 2, col)
