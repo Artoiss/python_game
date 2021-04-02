@@ -30,6 +30,7 @@ def main():
 
     # Game loop
     while running:
+        map_object.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False

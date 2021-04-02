@@ -124,3 +124,60 @@ class Map:
         if self.troops != 0:
             for i in self.troops:
                 i.move()
+
+    'Draws lines to GUI.'
+    def draw_line(self, x1, y1, x2, y2, col):
+        pygame.draw.lines(self.window, col, True,
+                          [(x1, y1), (x2, y2)], 1)
+
+
+    # Update map in every iteration
+    def update(self):
+        self.window.fill((127, 127, 127))
+        for index_i, i in enumerate(self.gridmap):
+            for index_j, j in enumerate(i):
+
+                # Grid object empty.
+                if j == 0:
+                    rect = Rect(index_i * self.blockSize, index_j*self.blockSize, self.blockSize, self.blockSize)
+                    pygame.draw.rect(self.window, (110, 110, 110), rect, 1)
+
+                # Grid object building and not active.
+                if str(type(j)) == "<class 'building.Building'>" and self.active_building == None:
+                    pygame.draw.rect(surface=self.window,
+                                     color=(90, 90, 90),
+                                     rect=Rect(index_i * self.blockSize + 1,
+                                               index_j * self.blockSize + 1,
+                                               self.blockSize - 2,
+                                               self.blockSize - 2
+                                               ))
+
+                # Grid object button.
+                if j == 'b':
+                    pygame.draw.rect(surface=self.window,
+                                     color=(0, 0, 0),
+                                     rect=Rect((index_i* self.blockSize),
+                                               index_j * self.blockSize,
+                                               self.blockSize * 1,
+                                               self.blockSize
+                                               ))
+
+                # Grid object active building
+                if str(type(j)) == "<class 'building.Building'>" and self.active_building != None:
+                    pygame.draw.rect(surface=self.window,
+                                     color=(90, 90, 90),
+                                     rect=Rect(index_i * self.blockSize + 1,
+                                               index_j * self.blockSize + 1,
+                                               self.blockSize - 2,
+                                               self.blockSize - 2
+                                               ))
+                    x = index_i * self.blockSize
+                    y = index_j * self.blockSize
+
+                    col = [0, 150, 0]
+
+                    # Draw square
+                    self.draw_line(x, y, x + self.blockSize, y, col)
+                    self.draw_line(x, y + self.blockSize, x, y, col)
+                    self.draw_line(x + self.blockSize, y, x + self.blockSize, y + self.blockSize, col)
+                    self.draw_line(x, y + self.blockSize, x + self.blockSize, y + self.blockSize, col)
