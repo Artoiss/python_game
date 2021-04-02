@@ -7,6 +7,7 @@ import time
 class Building:
     def __init__(self, pos, window, blockSize, res_w, res_h):
         self.window = window
+        self.position = pos
         self.position_x = pos[0]
         self.position_y = pos[1]
         self.blockSize = blockSize
@@ -56,5 +57,3 @@ class Building:
         pygame.draw.lines(self.window, col, True,
                           [(x1, y1), (x2, y2)], 1)
 
-    def make_troops(self):
-        print("asd")

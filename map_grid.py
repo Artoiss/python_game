@@ -3,6 +3,7 @@ import pygame
 import math
 from building import Building
 from button import Button
+from unit import Unit
 
 class Map:
     def __init__(self, window, blockSize, res_w, res_h):
@@ -14,7 +15,9 @@ class Map:
         self.new_build_pos_y = None
         self.object_selected = 0
         self.active_troop_button = None
+        self.troops = []
         self.gridmap = self.grid()
+        self.active_building = None
 
     'Create grid from blocks'
     def grid(self):
@@ -22,16 +25,19 @@ class Map:
         for x in range(0, self.res_w, self.blockSize):
             grid_map_line = []
             for y in range(0, self.res_h, self.blockSize):
+                # Create panels to screen, which are 3 blocks large from the bottom, and
+                # right side of the screen.
                 if ((self.res_w - x) <= (3 * self.blockSize)) or ((self.res_h - y) <= (3 * self.blockSize)):
                     rect = Rect(x, y, self.blockSize, self.blockSize)
                     pygame.draw.rect(self.window, (110, 110, 110), rect)
                     grid_map_line.append('p')
+
+                # Create grid blocks.
                 else:
                     rect = Rect(x, y, self.blockSize, self.blockSize)
                     pygame.draw.rect(self.window, (110, 110, 110), rect, 1)
                     grid_map_line.append(0)
             gridmap.append(grid_map_line)
-        print(gridmap)
         return gridmap
 
     'Returns object that is located in gridmap position.'
@@ -71,10 +77,15 @@ class Map:
         self.change_grid_object(self.new_build_pos_x, self.new_build_pos_y, new_building)
 
 
+    def troop_list_update(self, troop):
+        lista = self.troops
+        lista.append(troop)
+        self.troops = lista
+
+
     'Sets building to select-position.'
     def select_building(self, pos):
         x, y = self.get_pos_in_grid(pos)
-
         # If IndexError occurs, it means that player clicked outside gridmap.
         try:
             grid_object = self.get_grid_object(x, y)
@@ -86,6 +97,7 @@ class Map:
                 # Show button for user
                 self.change_grid_object(4, 14, 'b')
                 self.change_grid_object(5, 14, 'b')
+                self.active_building = grid_object
                 return
 
             if str(type(grid_object)) == "<class 'building.Building'>" and self.object_selected and grid_object.selected:
@@ -97,9 +109,18 @@ class Map:
                 self.active_troop_button = None
                 self.change_grid_object(4, 14, 'p')
                 self.change_grid_object(5, 14, 'p')
+                self.active_building = None
+
+            # Create troop
+            if str(type(self.active_troop_button)) == "<class 'button.Button'>" and grid_object == 'b':
+                troop = Unit(self.active_building.get_position(), self.window, self.blockSize)
+                self.troop_list_update(troop)
 
         except IndexError:
             print("Not active block at the moment.")
             return
 
-
+    def update_troops(self):
+        if self.troops != 0:
+            for i in self.troops:
+                i.move()

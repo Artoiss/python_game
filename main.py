@@ -25,24 +25,34 @@ def main():
     # Set basic map
     map_object = Map(window, blockSize, res_w, res_h)
 
+    # Variable to help with recognizing single mouse event.
+    mouse = 1
+
     # Game loop
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        #window.blit(image, image.get_rect(center = window.get_rect().center))
+
+        # If mouse is released new click is possible.
+        if event.type == pygame.MOUSEBUTTONUP:
+            mouse = 1
+
+        # Get mouse position and information if mouse button is clicked.
         pos = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
-        if click[0] == 1:
-
+        if click[0] == 1 and mouse:
+            # If map grid cell is empty, create building.
             if map_object.position_empty(pos) and map_object.object_selected == 0:
                 map_object.create_building()
-            else:
 
+            else:
                 map_object.select_building(pos)
 
             pygame.display.update()
-            time.sleep(0.3)
+            mouse = 0
+
+        map_object.update_troops()
 
         pygame.display.flip()
         clock.tick(FPS)

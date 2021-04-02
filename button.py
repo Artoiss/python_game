@@ -14,6 +14,8 @@ class Button:
         self.window = window
         self.draw_button()
 
+
+    'Create "button" to the screen'
     def draw_button(self):
         pygame.draw.rect(surface=self.window,
                          color=(0, 0, 0),
@@ -23,9 +25,7 @@ class Button:
                                    self.blockSize
                                    ))
 
-        #font = pygame.font.SysFont('comicsans', 60)
-
-
+    'Remove button from the screen.'
     def remove_button(self):
         pygame.draw.rect(surface=self.window,
                          color=(110, 110, 110),
