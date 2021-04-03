@@ -107,11 +107,12 @@ class Map:
                 self.object_selected = 1
                 grid_object.select(1)
                 dim = self.get_grid_dimensions()
-                self.active_troop_button = Button(4, dim[1] - 2, 30, 2, "Troop", self.window)
+                self.active_troop_button = Button(3, dim[1] - 2, 30, 2, "Troop", self.window)
 
                 # Show button for user
+
+                self.change_grid_object(3, dim[1] - 2, 'b')
                 self.change_grid_object(4, dim[1] - 2, 'b')
-                self.change_grid_object(5, dim[1] - 2, 'b')
 
 
                 self.active_building = grid_object
@@ -126,8 +127,8 @@ class Map:
                 self.active_troop_button = None
 
                 dim = self.get_grid_dimensions()
+                self.change_grid_object(3, dim[1] - 2, 'p')
                 self.change_grid_object(4, dim[1] - 2, 'p')
-                self.change_grid_object(5, dim[1] - 2, 'p')
                 self.active_building = None
 
             # Create troop
@@ -173,20 +174,12 @@ class Map:
 
                     self.window.blit(myimage, imagerect)
 
-                    """pygame.draw.rect(surface=self.window,
-                                     color=(90, 90, 90),
-                                     rect=Rect(index_i * self.blockSize + 1,
-                                               index_j * self.blockSize + 1,
-                                               self.blockSize - 2,
-                                               self.blockSize - 2
-                                               ))
-                    """
                 # Grid object button.
                 if j == 'b':
                     dim = self.get_grid_dimensions()
                     myimage = pygame.image.load("./sprites/button_1.png")
-                    imagerect = Rect(4 * self.blockSize,
-                                     dim[1] * self.blockSize,
+                    imagerect = Rect(3 * self.blockSize,
+                                     (dim[1] - 2) * self.blockSize,
                                      self.blockSize,
                                      self.blockSize
                                      )

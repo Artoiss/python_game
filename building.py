@@ -13,22 +13,11 @@ class Building:
         self.blockSize = blockSize
         self.res_w = res_w
         self.res_h = res_h
-        self.draw_building()
         self.selected = 0
 
     'Returns position of the building '
     def get_position(self):
         return self.position
-
-    'Draws building to the map'
-    def draw_building(self):
-        pygame.draw.rect(surface=self.window,
-                         color=(90, 90, 90),
-                         rect=Rect(self.position_x * self.blockSize,
-                                   self.position_y * self.blockSize,
-                                   self.blockSize,
-                                   self.blockSize
-                                   ))
 
     'Selects block and makes green square around it.'
     def select(self, status):
