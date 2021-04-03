@@ -32,12 +32,17 @@ class Map:
                     pygame.draw.rect(self.window, (110, 110, 110), rect)
                     grid_map_line.append('p')
 
+                elif ((x / self.blockSize) == 10 and (y / self.blockSize) == 10):
+                    rect = Rect(x, y, self.blockSize, self.blockSize)
+                    pygame.draw.rect(self.window, (0, 110, 0), rect)
+                    grid_map_line.append('r')
                 # Create grid blocks.
                 else:
                     rect = Rect(x, y, self.blockSize, self.blockSize)
                     pygame.draw.rect(self.window, (110, 110, 110), rect, 1)
                     grid_map_line.append(0)
             gridmap.append(grid_map_line)
+        print(gridmap)
         return gridmap
 
     'Returns object that is located in gridmap position.'
@@ -113,7 +118,7 @@ class Map:
 
             # Create troop
             if str(type(self.active_troop_button)) == "<class 'button.Button'>" and grid_object == 'b':
-                troop = Unit(self.active_building.get_position(), self.window, self.blockSize)
+                troop = Unit(self.active_building.get_position(), self.window, self.blockSize, self.gridmap)
                 self.troop_list_update(troop)
 
         except IndexError:
@@ -131,7 +136,7 @@ class Map:
                           [(x1, y1), (x2, y2)], 1)
 
 
-    # Update map in every iteration
+    'Update map in every iteration'
     def update(self):
         self.window.fill((127, 127, 127))
         for index_i, i in enumerate(self.gridmap):
@@ -161,6 +166,11 @@ class Map:
                                                self.blockSize * 1,
                                                self.blockSize
                                                ))
+
+                # Resource
+                if j == 'r':
+                    rect = Rect(index_i * self.blockSize, index_j * self.blockSize, self.blockSize, self.blockSize)
+                    pygame.draw.rect(self.window, (0, 110, 0), rect)
 
                 # Grid object active building
                 if str(type(j)) == "<class 'building.Building'>" and self.active_building == j:
