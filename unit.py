@@ -1,13 +1,14 @@
 import pygame
 from pygame import Rect
+import math
 
 class Unit:
     def __init__(self, pos, window, blockSize, gridmap):
         self.blockSize = blockSize
         self.position_x = pos[0] * self.blockSize - 10
         self.position_y = pos[1] * self.blockSize - 10
-        self.initial_pos_x = pos[0] * self.blockSize - 10
-        self.initial_pos_y = pos[1] * self.blockSize - 10
+        self.initial_pos_x = pos[0] * self.blockSize
+        self.initial_pos_y = pos[1] * self.blockSize
         self.return_to_base = 0
         self.window = window
         self.gridmap = gridmap
@@ -15,20 +16,40 @@ class Unit:
 
         self.create_troop()
 
+    'Draws troop object to the map.'
     def create_troop(self):
         rect = Rect(self.position_x, self.position_y, 10, 10)
         pygame.draw.rect(self.window, (0, 0, 0), rect)
 
 
+    'Calculate euclidian distance'
+    def distance(self, x1, x2, y1, y2):
+        return math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+
+
+
+    'Gets coordinates where nearest resource is located and returns it.'
     def get_resource_coordinates(self):
+        min_dist = 10000
+        min_x = []
+        min_y = []
         for index_i, i  in enumerate(self.gridmap):
             for index_j, j in enumerate(i):
-                if self.gridmap[index_i][index_j] == 'r':
-                    return [index_i, index_j]
+                if j == 'r':
+                    # Calculate nearest resource with euclidian distance
+                    dist = self.distance(index_i * self.blockSize, self.initial_pos_x, index_j * self.blockSize, self.initial_pos_y)
+                    if dist < min_dist:
+                        min_dist = dist
+                        min_x = index_i
+                        min_y = index_j
+        return [min_x, min_y]
 
-
+    'Calculates next position for the troop.'
     def calculate_next_position(self):
+        # Coordinates in pixel system.
         pixel_coordinates = [i * self.blockSize for i in self.target]
+
+        # If troop movement is towards resource.
         if (pixel_coordinates[0] != self.position_x or pixel_coordinates[1] != self.position_y) and self.return_to_base == 0:
             if pixel_coordinates[0] > self.position_x:
                 self.position_x = self.position_x + 1
@@ -42,12 +63,15 @@ class Unit:
             elif pixel_coordinates[1] < self.position_y:
                 self.position_y = self.position_y + -1
 
+        # If troop is at resource, set flag to return back to base.
         if (pixel_coordinates[0] == self.position_x and pixel_coordinates[0] == self.position_y):
             self.return_to_base = 1
 
+        # If troop is at base, set flag to get back to resource.
         if (self.initial_pos_x == self.position_x and self.initial_pos_y == self.position_y):
             self.return_to_base = 0
 
+        # If troop movement is back to base
         if self.return_to_base:
             if self.initial_pos_x > self.position_x:
                 self.position_x = self.position_x + 1
@@ -61,18 +85,9 @@ class Unit:
             elif self.initial_pos_y < self.position_y:
                 self.position_y = self.position_y + -1
 
-
-
-
-
-
+    'Moves the troop based on calculated next position.'
     def move(self):
         self.calculate_next_position()
-
-        #self.position_x = self.position_x - 1
-        #self.position_y = self.position_y - 1
-
-
         rect = Rect(self.position_x - 1, self.position_y, 10, 10)
         pygame.draw.rect(self.window, (0, 0, 0), rect)
 

@@ -32,7 +32,7 @@ class Map:
                     pygame.draw.rect(self.window, (110, 110, 110), rect)
                     grid_map_line.append('p')
 
-                elif ((x / self.blockSize) == 10 and (y / self.blockSize) == 10):
+                elif ((x / self.blockSize) == 10 and (y / self.blockSize) == 10) or ((x / self.blockSize) == 3 and (y / self.blockSize) == 3):
                     rect = Rect(x, y, self.blockSize, self.blockSize)
                     pygame.draw.rect(self.window, (0, 110, 0), rect)
                     grid_map_line.append('r')
