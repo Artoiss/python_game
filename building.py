@@ -24,10 +24,10 @@ class Building:
     def draw_building(self):
         pygame.draw.rect(surface=self.window,
                          color=(90, 90, 90),
-                         rect=Rect(self.position_x * self.blockSize + 1,
-                                   self.position_y * self.blockSize + 1,
-                                   self.blockSize -2,
-                                   self.blockSize -2
+                         rect=Rect(self.position_x * self.blockSize,
+                                   self.position_y * self.blockSize,
+                                   self.blockSize,
+                                   self.blockSize
                                    ))
 
     'Selects block and makes green square around it.'

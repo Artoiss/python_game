@@ -13,6 +13,7 @@ class Unit:
         self.window = window
         self.gridmap = gridmap
         self.target = self.get_resource_coordinates()
+        self.init_time = 0
 
         self.create_troop()
 
@@ -48,23 +49,22 @@ class Unit:
     def calculate_next_position(self):
         # Coordinates in pixel system.
         pixel_coordinates = [i * self.blockSize for i in self.target]
-
         # If troop movement is towards resource.
         if (pixel_coordinates[0] != self.position_x or pixel_coordinates[1] != self.position_y) and self.return_to_base == 0:
             if pixel_coordinates[0] > self.position_x:
                 self.position_x = self.position_x + 1
 
             elif pixel_coordinates[0] < self.position_x:
-                self.position_x = self.position_x + -1
+                self.position_x = self.position_x - 1
 
             if pixel_coordinates[1] > self.position_y:
                 self.position_y = self.position_y + 1
 
             elif pixel_coordinates[1] < self.position_y:
-                self.position_y = self.position_y + -1
+                self.position_y = self.position_y - 1
 
         # If troop is at resource, set flag to return back to base.
-        if (pixel_coordinates[0] == self.position_x and pixel_coordinates[0] == self.position_y):
+        if (pixel_coordinates[0] == self.position_x and pixel_coordinates[1] == self.position_y):
             self.return_to_base = 1
 
         # If troop is at base, set flag to get back to resource.
@@ -77,19 +77,44 @@ class Unit:
                 self.position_x = self.position_x + 1
 
             elif self.initial_pos_x < self.position_x:
-                self.position_x = self.position_x + -1
+                self.position_x = self.position_x - 1
 
             if self.initial_pos_y > self.position_y:
                 self.position_y = self.position_y + 1
 
             elif self.initial_pos_y < self.position_y:
-                self.position_y = self.position_y + -1
+                self.position_y = self.position_y - 1
 
     'Moves the troop based on calculated next position.'
     def move(self):
-        self.calculate_next_position()
-        rect = Rect(self.position_x - 1, self.position_y, 10, 10)
-        pygame.draw.rect(self.window, (0, 0, 0), rect)
+        if self.init_time <= 5:
+            self.calculate_next_position()
+
+            myimage = pygame.image.load("./sprites/lumberjack_1_1.png")
+            imagerect = Rect(self.position_x,
+                                    self.position_y,
+                                    self.blockSize,
+                                    self.blockSize
+                                    )
+
+            self.window.blit(myimage, imagerect)
+
+            self.init_time += 1
+        elif self.init_time >= 5 and self.init_time <= 10:
+            self.calculate_next_position()
+
+            myimage = pygame.image.load("./sprites/lumberjack_1_2.png")
+            imagerect = Rect(self.position_x,
+                             self.position_y,
+                             self.blockSize,
+                             self.blockSize
+                             )
+
+            self.window.blit(myimage, imagerect)
+            self.init_time += 1
+            if self.init_time >= 10:
+                self.init_time = 0
+
 
 
 

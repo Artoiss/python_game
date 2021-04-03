@@ -8,15 +8,15 @@ def main():
     # Initializations
     pygame.init()
 
-    res_w = 720
-    res_h = 480
+    res_w = 1080
+    res_h = 900
     blockSize = 30
 
     window = pygame.display.set_mode((res_w, res_h))
     running = True
 
     # FPS setup for game loop
-    FPS = 60
+    FPS = 20
     clock = pygame.time.Clock()
 
     # Temporary base background
@@ -35,6 +35,10 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
+        # Esc for closing game.
+        if event.type == 768:
+            running = False
+
         # If mouse is released new click is possible.
         if event.type == pygame.MOUSEBUTTONUP:
             mouse = 1
@@ -50,12 +54,12 @@ def main():
             else:
                 map_object.select_building(pos)
 
-            pygame.display.update()
+            #pygame.display.update()
             mouse = 0
 
         map_object.update_troops()
 
-        pygame.display.flip()
+        pygame.display.update()
         clock.tick(FPS)
 
 

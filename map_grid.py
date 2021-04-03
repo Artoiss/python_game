@@ -32,10 +32,13 @@ class Map:
                     pygame.draw.rect(self.window, (110, 110, 110), rect)
                     grid_map_line.append('p')
 
-                elif ((x / self.blockSize) == 10 and (y / self.blockSize) == 10) or ((x / self.blockSize) == 3 and (y / self.blockSize) == 3):
+                elif ((x / self.blockSize) == 10 and (y / self.blockSize) == 10) or ((x / self.blockSize) == 3 and (y / self.blockSize) == 3)\
+                        or ((x / self.blockSize) == 10 and (y / self.blockSize) == 11)\
+                    or ((x / self.blockSize) == 11 and (y / self.blockSize) == 11):
                     rect = Rect(x, y, self.blockSize, self.blockSize)
                     pygame.draw.rect(self.window, (0, 110, 0), rect)
                     grid_map_line.append('r')
+
                 # Create grid blocks.
                 else:
                     rect = Rect(x, y, self.blockSize, self.blockSize)
@@ -52,6 +55,12 @@ class Map:
     'Changes object in gridmap.'
     def change_grid_object(self, x, y, obj):
         self.gridmap[x][y] = obj
+
+    def get_grid_dimensions(self):
+        w = self.res_w / self.blockSize
+        h = self.res_h / self.blockSize
+        return [int(w), int(h)]
+
 
     'Converts pixels coordinates to grid coordinates.'
     def get_pos_in_grid(self, pos):
@@ -97,11 +106,14 @@ class Map:
             if str(type(grid_object)) == "<class 'building.Building'>" and (self.object_selected == 0):
                 self.object_selected = 1
                 grid_object.select(1)
-                self.active_troop_button = Button(4, 14, 30, 2, "Troop", self.window)
+                dim = self.get_grid_dimensions()
+                self.active_troop_button = Button(4, dim[1] - 2, 30, 2, "Troop", self.window)
 
                 # Show button for user
-                self.change_grid_object(4, 14, 'b')
-                self.change_grid_object(5, 14, 'b')
+                self.change_grid_object(4, dim[1] - 2, 'b')
+                self.change_grid_object(5, dim[1] - 2, 'b')
+
+
                 self.active_building = grid_object
                 return
 
@@ -112,8 +124,10 @@ class Map:
                 # Remove button
                 self.active_troop_button.remove_button()
                 self.active_troop_button = None
-                self.change_grid_object(4, 14, 'p')
-                self.change_grid_object(5, 14, 'p')
+
+                dim = self.get_grid_dimensions()
+                self.change_grid_object(4, dim[1] - 2, 'p')
+                self.change_grid_object(5, dim[1] - 2, 'p')
                 self.active_building = None
 
             # Create troop
@@ -144,51 +158,58 @@ class Map:
 
                 # Grid object empty.
                 if j == 0:
-                    rect = Rect(index_i * self.blockSize, index_j*self.blockSize, self.blockSize, self.blockSize)
+                    rect = Rect(index_i * self.blockSize, index_j * self.blockSize, self.blockSize, self.blockSize)
                     pygame.draw.rect(self.window, (110, 110, 110), rect, 1)
 
                 # Grid object building and not active.
                 if str(type(j)) == "<class 'building.Building'>":
-                    pygame.draw.rect(surface=self.window,
+
+                    myimage = pygame.image.load("./sprites/base_sprite.png")
+                    imagerect = Rect(index_i * self.blockSize,
+                                               index_j * self.blockSize,
+                                               self.blockSize,
+                                               self.blockSize
+                                               )
+
+                    self.window.blit(myimage, imagerect)
+
+                    """pygame.draw.rect(surface=self.window,
                                      color=(90, 90, 90),
                                      rect=Rect(index_i * self.blockSize + 1,
                                                index_j * self.blockSize + 1,
                                                self.blockSize - 2,
                                                self.blockSize - 2
                                                ))
-
+                    """
                 # Grid object button.
                 if j == 'b':
-                    pygame.draw.rect(surface=self.window,
-                                     color=(0, 0, 0),
-                                     rect=Rect((index_i* self.blockSize),
-                                               index_j * self.blockSize,
-                                               self.blockSize * 1,
-                                               self.blockSize
-                                               ))
+                    dim = self.get_grid_dimensions()
+                    myimage = pygame.image.load("./sprites/button_1.png")
+                    imagerect = Rect(4 * self.blockSize,
+                                     dim[1] * self.blockSize,
+                                     self.blockSize,
+                                     self.blockSize
+                                     )
+
+                    self.window.blit(myimage, imagerect)
 
                 # Resource
                 if j == 'r':
-                    rect = Rect(index_i * self.blockSize, index_j * self.blockSize, self.blockSize, self.blockSize)
-                    pygame.draw.rect(self.window, (0, 110, 0), rect)
+                    myimage = pygame.image.load("./sprites/resource_1.png")
+                    imagerect = Rect(index_i * self.blockSize,
+                                            index_j * self.blockSize,
+                                            self.blockSize,
+                                            self.blockSize
+                                            )
+
+                    self.window.blit(myimage, imagerect)
 
                 # Grid object active building
                 if str(type(j)) == "<class 'building.Building'>" and self.active_building == j:
-                    pygame.draw.rect(surface=self.window,
-                                     color=(90, 90, 90),
-                                     rect=Rect(index_i * self.blockSize + 1,
-                                               index_j * self.blockSize + 1,
-                                               self.blockSize - 2,
-                                               self.blockSize - 2
-                                               ))
-                    x = index_i * self.blockSize
-                    y = index_j * self.blockSize
-
-                    # Green color for lines.
-                    col = [0, 150, 0]
-
-                    # Draw square
-                    self.draw_line(x, y, x + self.blockSize, y, col)
-                    self.draw_line(x, y + self.blockSize, x, y, col)
-                    self.draw_line(x + self.blockSize - 2, y, x + self.blockSize - 2, y + self.blockSize, col)
-                    self.draw_line(x, y + self.blockSize - 2, x + self.blockSize, y + self.blockSize - 2, col)
+                    myimage = pygame.image.load("./sprites/base_sprite_selected.png")
+                    imagerect = rect = Rect(index_i * self.blockSize,
+                                            index_j * self.blockSize,
+                                            self.blockSize,
+                                            self.blockSize
+                                            )
+                    self.window.blit(myimage, imagerect)
