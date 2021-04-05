@@ -3,6 +3,7 @@ from unit import Unit
 from building import Building
 from map_grid import Map
 import time
+import os
 
 def main():
     # Initializations
@@ -11,7 +12,7 @@ def main():
     res_w = 1080
     res_h = 900
     blockSize = 30
-
+    sprite_list = load_images()
     window = pygame.display.set_mode((res_w, res_h))
     running = True
 
@@ -61,6 +62,18 @@ def main():
 
         pygame.display.update()
         clock.tick(FPS)
+
+'Load sprites from ./sprites'
+def load_images():
+    image_list = {}
+    path = os.getcwd() + "/sprites"
+    for sprite in os.listdir(path):
+        image_path = path + "/" + sprite
+        if image_path[-4:] == '.png':
+            new_sprite = pygame.image.load(image_path)
+            image_list[sprite] = new_sprite
+
+    return image_list
 
 
 
