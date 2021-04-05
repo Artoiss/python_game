@@ -21,7 +21,7 @@ def main():
     clock = pygame.time.Clock()
 
     # Temporary base background
-    window.fill((127, 127, 127))
+    window.fill((0, 110, 0))
 
     # Set basic map
     map_object = Map(window, blockSize, res_w, res_h)

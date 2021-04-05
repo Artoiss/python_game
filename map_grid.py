@@ -27,10 +27,13 @@ class Map:
             for y in range(0, self.res_h, self.blockSize):
                 # Create panels to screen, which are 3 blocks large from the bottom, and
                 # right side of the screen.
-                if ((self.res_w - x) <= (3 * self.blockSize)) or ((self.res_h - y) <= (3 * self.blockSize)):
+                if (self.res_h - y) <= (3 * self.blockSize):
                     rect = Rect(x, y, self.blockSize, self.blockSize)
                     pygame.draw.rect(self.window, (110, 110, 110), rect)
                     grid_map_line.append('p')
+
+                elif (self.res_h - y) <= (4 * self.blockSize):
+                    grid_map_line.append('pe')
 
                 elif ((x / self.blockSize) == 10 and (y / self.blockSize) == 10) or ((x / self.blockSize) == 3 and (y / self.blockSize) == 3)\
                         or ((x / self.blockSize) == 10 and (y / self.blockSize) == 11)\
@@ -153,14 +156,14 @@ class Map:
 
     'Update map in every iteration'
     def update(self):
-        self.window.fill((127, 127, 127))
+        self.window.fill((255, 255, 204))
         for index_i, i in enumerate(self.gridmap):
             for index_j, j in enumerate(i):
 
                 # Grid object empty.
                 if j == 0:
                     rect = Rect(index_i * self.blockSize, index_j * self.blockSize, self.blockSize, self.blockSize)
-                    pygame.draw.rect(self.window, (110, 110, 110), rect, 1)
+                    pygame.draw.rect(self.window, ((255, 255, 204)), rect, 1)
 
                 # Grid object building and not active.
                 if str(type(j)) == "<class 'building.Building'>":
@@ -200,9 +203,28 @@ class Map:
                 # Grid object active building
                 if str(type(j)) == "<class 'building.Building'>" and self.active_building == j:
                     myimage = pygame.image.load("./sprites/base_sprite_selected.png")
-                    imagerect = rect = Rect(index_i * self.blockSize,
+                    imagerect = Rect(index_i * self.blockSize,
                                             index_j * self.blockSize,
                                             self.blockSize,
                                             self.blockSize
                                             )
+                    self.window.blit(myimage, imagerect)
+
+                # Draw panel
+                if j == 'p':
+                    myimage = pygame.image.load("./sprites/panel_3.png")
+                    imagerect = Rect(index_i * self.blockSize,
+                                     index_j * self.blockSize,
+                                     self.blockSize,
+                                     self.blockSize
+                                     )
+                    self.window.blit(myimage, imagerect)
+
+                if j == 'pe':
+                    myimage = pygame.image.load("./sprites/panel_edge.png")
+                    imagerect = Rect(index_i * self.blockSize,
+                                     index_j * self.blockSize,
+                                     self.blockSize,
+                                     self.blockSize
+                                     )
                     self.window.blit(myimage, imagerect)
