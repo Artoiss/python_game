@@ -12,19 +12,6 @@ class Button:
         self.text = text
         self.blockWidth = blockWidth
         self.window = window
-        self.draw_button()
-
-
-    'Create "button" to the screen'
-    def draw_button(self):
-        myimage = pygame.image.load("./sprites/button_1.png")
-        imagerect = Rect(self.position_x * self.blockSize,
-                         self.position_y * self.blockSize,
-                         self.blockSize,
-                         self.blockSize
-                         )
-
-        self.window.blit(myimage, imagerect)
 
     'Remove button from the screen.'
     def remove_button(self):

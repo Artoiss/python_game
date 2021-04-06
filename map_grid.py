@@ -6,11 +6,12 @@ from button import Button
 from unit import Unit
 
 class Map:
-    def __init__(self, window, blockSize, res_w, res_h):
+    def __init__(self, window, blockSize, res_w, res_h, sprite_list):
         self.blockSize = blockSize
         self.window = window
         self.res_w = res_w
         self.res_h = res_h
+        self.sprite_list = sprite_list
         self.new_build_pos_x = None
         self.new_build_pos_y = None
         self.object_selected = 0
@@ -24,7 +25,7 @@ class Map:
         gridmap = []
         with open("map.txt", "r") as map:
             for line in map:
-                line = line[:-2]
+                line = line[:-1]
                 map_line = []
                 for i in line.split(" "):
                     if i == '0':
@@ -97,10 +98,10 @@ class Map:
 
                 # Show button for user
 
-                self.change_grid_object(3, dim[1] - 2, 'b')
-                self.change_grid_object(4, dim[1] - 2, 'b')
-                self.change_grid_object(3, dim[1] - 1, 'b')
-                self.change_grid_object(4, dim[1] - 1, 'b')
+                self.change_grid_object(5, dim[1] - 3, 'b')
+                self.change_grid_object(6, dim[1] - 3, 'b')
+                self.change_grid_object(5, dim[1] - 2, 'b')
+                self.change_grid_object(6, dim[1] - 2, 'b')
 
 
                 self.active_building = grid_object
@@ -115,10 +116,10 @@ class Map:
                 self.active_troop_button = None
 
                 dim = self.get_grid_dimensions()
-                self.change_grid_object(3, dim[1] - 2, 'p')
-                self.change_grid_object(4, dim[1] - 2, 'p')
-                self.change_grid_object(3, dim[1] - 1, 'p')
-                self.change_grid_object(4, dim[1] - 1, 'p')
+                self.change_grid_object(5, dim[1] - 3, 'p')
+                self.change_grid_object(6, dim[1] - 3, 'p')
+                self.change_grid_object(5, dim[1] - 2, 'p')
+                self.change_grid_object(6, dim[1] - 2, 'p')
                 self.active_building = None
 
             # Create troop
@@ -155,7 +156,7 @@ class Map:
                 # Grid object building and not active.
                 if str(type(j)) == "<class 'building.Building'>":
 
-                    myimage = pygame.image.load("./sprites/tent.png")
+                    myimage = self.sprite_list["tent"]
                     imagerect = Rect(index_i * self.blockSize,
                                                index_j * self.blockSize,
                                                self.blockSize,
@@ -166,10 +167,13 @@ class Map:
 
                 # Grid object button.
                 if j == 'b':
+                    rect = Rect(index_i * self.blockSize, index_j * self.blockSize, self.blockSize, self.blockSize)
+                    pygame.draw.rect(self.window, ((100, 100, 100)), rect)
+                    pygame.draw.rect(self.window, ((0, 0, 0)), rect, 1)
                     dim = self.get_grid_dimensions()
-                    myimage = pygame.image.load("./sprites/miner_face.png")
-                    imagerect = Rect(3 * self.blockSize,
-                                     (dim[1] - 2) * self.blockSize,
+                    myimage = self.sprite_list["miner_face"]
+                    imagerect = Rect(5 * self.blockSize,
+                                     (dim[1] - 3) * self.blockSize,
                                      self.blockSize,
                                      self.blockSize
                                      )
@@ -178,7 +182,7 @@ class Map:
 
                 # Resource
                 if j == 'r':
-                    myimage = pygame.image.load("./sprites/resource_1.png")
+                    myimage = self.sprite_list["resource_1"]
                     imagerect = Rect(index_i * self.blockSize,
                                             index_j * self.blockSize,
                                             self.blockSize,
@@ -189,7 +193,7 @@ class Map:
 
                 # Grid object active building
                 if str(type(j)) == "<class 'building.Building'>" and self.active_building == j:
-                    myimage = pygame.image.load("./sprites/tent_selected.png")
+                    myimage = self.sprite_list["tent_selected"]
                     imagerect = Rect(index_i * self.blockSize,
                                             index_j * self.blockSize,
                                             self.blockSize,
@@ -199,7 +203,7 @@ class Map:
 
                 # Draw panel
                 if j == 'p':
-                    myimage = pygame.image.load("./sprites/panel_3.png")
+                    myimage = self.sprite_list["panel_3"]
                     imagerect = Rect(index_i * self.blockSize,
                                      index_j * self.blockSize,
                                      self.blockSize,
@@ -208,7 +212,7 @@ class Map:
                     self.window.blit(myimage, imagerect)
 
                 if j == 'pe':
-                    myimage = pygame.image.load("./sprites/panel_edge.png")
+                    myimage = self.sprite_list["panel_edge"]
                     imagerect = Rect(index_i * self.blockSize,
                                      index_j * self.blockSize,
                                      self.blockSize,
@@ -217,7 +221,10 @@ class Map:
                     self.window.blit(myimage, imagerect)
 
                 if j == 'l':
-                    myimage = pygame.image.load("./sprites/log.png")
+                    rect = Rect(index_i * self.blockSize, index_j * self.blockSize, self.blockSize, self.blockSize)
+                    pygame.draw.rect(self.window, ((100, 100, 100)), rect)
+                    pygame.draw.rect(self.window, ((0, 0, 0)), rect, 1)
+                    myimage = self.sprite_list["log"]
                     imagerect = Rect(index_i * self.blockSize,
                                      index_j * self.blockSize,
                                      self.blockSize,
@@ -225,3 +232,19 @@ class Map:
                                      )
                     self.window.blit(myimage, imagerect)
 
+                if j == 'c':
+                    rect = Rect(index_i * self.blockSize, index_j * self.blockSize, self.blockSize, self.blockSize)
+                    pygame.draw.rect(self.window, ((100, 100, 100)), rect)
+                    pygame.draw.rect(self.window, ((0, 0, 0)), rect, 1)
+                    myimage = self.sprite_list["corner_1"]
+                    imagerect = Rect(index_i * self.blockSize,
+                                     index_j * self.blockSize,
+                                     self.blockSize,
+                                     self.blockSize
+                                     )
+                    self.window.blit(myimage, imagerect)
+
+                if j == 'c1':
+                    rect = Rect(index_i * self.blockSize, index_j * self.blockSize, self.blockSize, self.blockSize)
+                    pygame.draw.rect(self.window, ((100, 100, 100)), rect)
+                    pygame.draw.rect(self.window, ((0, 0, 0)), rect, 1)

@@ -25,7 +25,7 @@ def main():
     window.fill((0, 110, 0))
 
     # Set basic map
-    map_object = Map(window, blockSize, res_w, res_h)
+    map_object = Map(window, blockSize, res_w, res_h, sprite_list)
 
     # Variable to help with recognizing single mouse event.
     mouse = 1
