@@ -13,6 +13,7 @@ def main():
     res_h = 900
     blockSize = 30
     sprite_list = load_images()
+    print(sprite_list)
     window = pygame.display.set_mode((res_w, res_h))
     running = True
 
@@ -71,7 +72,7 @@ def load_images():
         image_path = path + "/" + sprite
         if image_path[-4:] == '.png':
             new_sprite = pygame.image.load(image_path)
-            image_list[sprite] = new_sprite
+            image_list[(sprite[:-4])] = new_sprite
 
     return image_list
 

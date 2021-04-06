@@ -90,7 +90,7 @@ class Unit:
         if self.init_time <= 5:
             self.calculate_next_position()
 
-            myimage = pygame.image.load("./sprites/lumberjack_1_1.png")
+            myimage = pygame.image.load("./sprites/miner_1_1.png")
             imagerect = Rect(self.position_x,
                                     self.position_y,
                                     self.blockSize,
@@ -103,7 +103,7 @@ class Unit:
         elif self.init_time >= 5 and self.init_time <= 10:
             self.calculate_next_position()
 
-            myimage = pygame.image.load("./sprites/lumberjack_1_2.png")
+            myimage = pygame.image.load("./sprites/miner_1_2.png")
             imagerect = Rect(self.position_x,
                              self.position_y,
                              self.blockSize,
