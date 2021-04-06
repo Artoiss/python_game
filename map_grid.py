@@ -19,38 +19,19 @@ class Map:
         self.gridmap = self.grid()
         self.active_building = None
 
-    'Create grid from blocks'
+    'Read map from a file'
     def grid(self):
         gridmap = []
-        for x in range(0, self.res_w, self.blockSize):
-            grid_map_line = []
-            for y in range(0, self.res_h, self.blockSize):
-                # Create panels to screen, which are 3 blocks large from the bottom, and
-                # right side of the screen.
-                if (self.res_h - y) <= (4 * self.blockSize):
-                    rect = Rect(x, y, self.blockSize, self.blockSize)
-                    pygame.draw.rect(self.window, (110, 110, 110), rect)
-                    grid_map_line.append('p')
-
-                elif (self.res_h - y) <= (5 * self.blockSize):
-                    grid_map_line.append('pe')
-
-                elif ((x / self.blockSize) == 10 and (y / self.blockSize) == 10) or ((x / self.blockSize) == 3 and (y / self.blockSize) == 3)\
-                        or ((x / self.blockSize) == 10 and (y / self.blockSize) == 11)\
-                    or ((x / self.blockSize) == 11 and (y / self.blockSize) == 11):
-                    rect = Rect(x, y, self.blockSize, self.blockSize)
-                    pygame.draw.rect(self.window, (0, 110, 0), rect)
-                    grid_map_line.append('r')
-
-                # Create grid blocks.
-                else:
-                    rect = Rect(x, y, self.blockSize, self.blockSize)
-                    pygame.draw.rect(self.window, (110, 110, 110), rect, 1)
-                    grid_map_line.append(0)
-            gridmap.append(grid_map_line)
-
-        print(gridmap)
-
+        with open("map.txt", "r") as map:
+            for line in map:
+                line = line[:-2]
+                map_line = []
+                for i in line.split(" "):
+                    if i == '0':
+                        map_line.append(int(i))
+                    else:
+                        map_line.append(i)
+                gridmap.append(map_line)
         return gridmap
 
     'Returns object that is located in gridmap position.'
