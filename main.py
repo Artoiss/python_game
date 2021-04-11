@@ -13,7 +13,6 @@ def main():
     res_h = 900
     blockSize = 30
     sprite_list = load_images()
-    print(sprite_list)
     window = pygame.display.set_mode((res_w, res_h))
     running = True
 

@@ -14,8 +14,8 @@ class Unit:
         self.gridmap = gridmap
         self.target = self.get_resource_coordinates()
         self.init_time = 0
-
         self.create_troop()
+        self.resource_carried = 0
 
     'Draws troop object to the map.'
     def create_troop(self):
@@ -45,6 +45,10 @@ class Unit:
                         min_y = index_j
         return [min_x, min_y]
 
+    'Returns amount of resources carried by the troop.'
+    def get_resource_amount(self):
+        return self.resource_carried
+
     'Calculates next position for the troop.'
     def calculate_next_position(self):
         # Coordinates in pixel system.
@@ -70,6 +74,7 @@ class Unit:
         # If troop is at base, set flag to get back to resource.
         if (self.initial_pos_x == self.position_x and self.initial_pos_y == self.position_y):
             self.return_to_base = 0
+            self.resource_carried += 1
 
         # If troop movement is back to base
         if self.return_to_base:
@@ -84,6 +89,7 @@ class Unit:
 
             elif self.initial_pos_y < self.position_y:
                 self.position_y = self.position_y - 1
+
 
     'Moves the troop based on calculated next position.'
     def move(self):
