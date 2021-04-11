@@ -6,7 +6,7 @@ from button import Button
 from unit import Unit
 
 class Map:
-    def __init__(self, window, blockSize, res_w, res_h, sprite_list):
+    def __init__(self, window, blockSize, res_w, res_h, sprite_list, resource_object):
         self.blockSize = blockSize
         self.window = window
         self.res_w = res_w
@@ -16,6 +16,7 @@ class Map:
         self.new_build_pos_y = None
         self.object_selected = 0
         self.active_troop_button = None
+        self.resource_object = resource_object
         self.troops = []
         self.gridmap = self.grid()
         self.active_building = None
@@ -123,7 +124,7 @@ class Map:
 
             # Create troop
             if str(type(self.active_troop_button)) == "<class 'button.Button'>" and grid_object == 'b':
-                troop = Unit(self.active_building.get_position(), self.window, self.blockSize, self.gridmap)
+                troop = Unit(self.active_building.get_position(), self.window, self.blockSize, self.gridmap, self.resource_object)
                 self.troop_list_update(troop)
 
         except IndexError:
@@ -145,6 +146,14 @@ class Map:
     def grid_rect(self, i, j):
         return Rect(Rect(i * self.blockSize, j * self.blockSize, self.blockSize, self.blockSize))
 
+    def update_resource(self, r_type, index_i, index_j):
+        rect = self.grid_rect(index_i, index_j)
+        pygame.draw.rect(self.window, ((100, 100, 100)), rect)
+        pygame.draw.rect(self.window, ((0, 0, 0)), rect, 1)
+
+        myfont = pygame.font.SysFont("monospace", 17)
+        label = myfont.render(str(r_type), 1, (255, 255, 255))
+        self.window.blit(label, (index_i * self.blockSize, index_j * self.blockSize))
 
     'Update map in every iteration'
     def update(self):
@@ -262,3 +271,12 @@ class Map:
                     rect = self.grid_rect(index_i, index_j)
                     pygame.draw.rect(self.window, ((100, 100, 100)), rect)
                     pygame.draw.rect(self.window, ((0, 0, 0)), rect, 1)
+
+                if j == 'gp1':
+                    self.update_resource(self.resource_object.show_gold(), index_i, index_j)
+
+                if j == 'l1':
+                    self.update_resource(self.resource_object.show_wood(), index_i, index_j)
+
+                if j == 'cr1':
+                    self.update_resource(self.resource_object.show_crystal(), index_i, index_j)

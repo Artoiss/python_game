@@ -2,6 +2,7 @@ import pygame
 from unit import Unit
 from building import Building
 from map_grid import Map
+from resources import Resources
 import time
 import os
 
@@ -23,8 +24,11 @@ def main():
     # Temporary base background
     window.fill((0, 110, 0))
 
+    # Initialize players resources
+    resource_object = Resources()
+
     # Set basic map
-    map_object = Map(window, blockSize, res_w, res_h, sprite_list)
+    map_object = Map(window, blockSize, res_w, res_h, sprite_list, resource_object)
 
     # Variable to help with recognizing single mouse event.
     mouse = 1
@@ -47,6 +51,7 @@ def main():
         # Get mouse position and information if mouse button is clicked.
         pos = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
+
         if click[0] == 1 and mouse:
             # If map grid cell is empty, create building.
             if map_object.position_empty(pos) and map_object.object_selected == 0:

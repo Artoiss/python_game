@@ -3,7 +3,7 @@ from pygame import Rect
 import math
 
 class Unit:
-    def __init__(self, pos, window, blockSize, gridmap):
+    def __init__(self, pos, window, blockSize, gridmap, resource_object):
         self.blockSize = blockSize
         self.position_x = pos[0] * self.blockSize - 10
         self.position_y = pos[1] * self.blockSize - 10
@@ -12,10 +12,11 @@ class Unit:
         self.return_to_base = 0
         self.window = window
         self.gridmap = gridmap
+        self.resource_object = resource_object
         self.target = self.get_resource_coordinates()
         self.init_time = 0
         self.create_troop()
-        self.resource_carried = 0
+
 
     'Draws troop object to the map.'
     def create_troop(self):
@@ -45,10 +46,6 @@ class Unit:
                         min_y = index_j
         return [min_x, min_y]
 
-    'Returns amount of resources carried by the troop.'
-    def get_resource_amount(self):
-        return self.resource_carried
-
     'Calculates next position for the troop.'
     def calculate_next_position(self):
         # Coordinates in pixel system.
@@ -73,8 +70,9 @@ class Unit:
 
         # If troop is at base, set flag to get back to resource.
         if (self.initial_pos_x == self.position_x and self.initial_pos_y == self.position_y):
+            if self.return_to_base != 0:
+                self.resource_object.add_wood(1)
             self.return_to_base = 0
-            self.resource_carried += 1
 
         # If troop movement is back to base
         if self.return_to_base:
