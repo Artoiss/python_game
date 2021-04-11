@@ -99,10 +99,10 @@ class Map:
 
                 # Show button for user
 
-                self.change_grid_object(5, dim[1] - 3, 'b')
-                self.change_grid_object(6, dim[1] - 3, 'b')
-                self.change_grid_object(5, dim[1] - 2, 'b')
-                self.change_grid_object(6, dim[1] - 2, 'b')
+                self.change_grid_object(5, dim[1] - 3, 'bl')
+                self.change_grid_object(6, dim[1] - 3, 'bl')
+                self.change_grid_object(5, dim[1] - 2, 'bl')
+                self.change_grid_object(6, dim[1] - 2, 'bl')
 
                 self.active_building = grid_object
                 return
@@ -123,7 +123,7 @@ class Map:
                 self.active_building = None
 
             # Create troop
-            if str(type(self.active_troop_button)) == "<class 'button.Button'>" and grid_object == 'b':
+            if str(type(self.active_troop_button)) == "<class 'button.Button'>" and grid_object == 'bl':
                 troop = Unit(self.active_building.get_position(), self.window, self.blockSize, self.gridmap, self.resource_object)
                 self.troop_list_update(troop)
 
@@ -174,12 +174,12 @@ class Map:
                     self.window.blit(myimage, imagerect)
 
                 # Grid object button.
-                if j == 'b':
+                if j == 'bl':
                     rect = self.grid_rect(index_i, index_j)
                     pygame.draw.rect(self.window, ((100, 100, 100)), rect)
                     pygame.draw.rect(self.window, ((0, 0, 0)), rect, 1)
                     dim = self.get_grid_dimensions()
-                    myimage = self.sprite_list["miner_face"]
+                    myimage = self.sprite_list["lumber_face"]
                     imagerect = Rect(5 * self.blockSize,
                                      (dim[1] - 3) * self.blockSize,
                                      self.blockSize,

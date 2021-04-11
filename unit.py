@@ -71,7 +71,7 @@ class Unit:
         # If troop is at base, set flag to get back to resource.
         if (self.initial_pos_x == self.position_x and self.initial_pos_y == self.position_y):
             if self.return_to_base != 0:
-                self.resource_object.add_wood(1)
+                self.resource_object.add_wood()
             self.return_to_base = 0
 
         # If troop movement is back to base
@@ -94,7 +94,7 @@ class Unit:
         if self.init_time <= 5:
             self.calculate_next_position()
 
-            myimage = pygame.image.load("./sprites/miner_1_1.png")
+            myimage = pygame.image.load("./sprites/lumberjack_1_1.png")
             imagerect = Rect(self.position_x,
                                     self.position_y,
                                     self.blockSize,
@@ -107,7 +107,7 @@ class Unit:
         elif self.init_time >= 5 and self.init_time <= 10:
             self.calculate_next_position()
 
-            myimage = pygame.image.load("./sprites/miner_1_2.png")
+            myimage = pygame.image.load("./sprites/lumberjack_1_2.png")
             imagerect = Rect(self.position_x,
                              self.position_y,
                              self.blockSize,
