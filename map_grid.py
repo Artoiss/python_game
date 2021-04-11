@@ -5,6 +5,7 @@ from building import Building
 from button import Button
 from unit import Unit
 
+'Reads map from a file and updates sprites to the GUI.'
 class Map:
     def __init__(self, window, blockSize, res_w, res_h, sprite_list, resource_object):
         self.blockSize = blockSize
@@ -33,6 +34,7 @@ class Map:
                         map_line.append(int(i))
                     else:
                         map_line.append(i)
+
                 gridmap.append(map_line)
         return gridmap
 
@@ -48,7 +50,6 @@ class Map:
         w = self.res_w / self.blockSize
         h = self.res_h / self.blockSize
         return [int(w), int(h)]
-
 
     'Converts pixels coordinates to grid coordinates.'
     def get_pos_in_grid(self, pos):
@@ -78,7 +79,7 @@ class Map:
                                 )
         self.change_grid_object(self.new_build_pos_x, self.new_build_pos_y, new_building)
 
-
+    'Add troop object to a list.'
     def troop_list_update(self, troop):
         lista = self.troops
         lista.append(troop)
@@ -146,13 +147,14 @@ class Map:
     def grid_rect(self, i, j):
         return Rect(Rect(i * self.blockSize, j * self.blockSize, self.blockSize, self.blockSize))
 
+    'Shows resource amounts for the player in the GUI.'
     def update_resource(self, r_type, index_i, index_j):
         rect = self.grid_rect(index_i, index_j)
         pygame.draw.rect(self.window, ((100, 100, 100)), rect)
         pygame.draw.rect(self.window, ((0, 0, 0)), rect, 1)
 
-        myfont = pygame.font.SysFont("monospace", 17)
-        label = myfont.render(str(r_type), 1, (255, 255, 255))
+        font = pygame.font.SysFont("monospace", 17)
+        label = font.render(str(r_type), 1, (255, 255, 255))
         self.window.blit(label, (index_i * self.blockSize, index_j * self.blockSize))
 
     'Update map in every iteration'
@@ -280,3 +282,8 @@ class Map:
 
                 if j == 'cr1':
                     self.update_resource(self.resource_object.show_crystal(), index_i, index_j)
+
+                if j == 'mb':
+                    myimage = self.sprite_list["main_b"]
+                    imagerect = self.grid_rect(index_i, index_j)
+                    self.window.blit(myimage, imagerect)
