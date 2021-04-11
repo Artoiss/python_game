@@ -130,6 +130,7 @@ class Map:
             print("Not active block at the moment.")
             return
 
+    'Updates troop position with every cycle.'
     def update_troops(self):
         if self.troops != 0:
             for i in self.troops:
@@ -140,6 +141,10 @@ class Map:
         pygame.draw.lines(self.window, col, True,
                           [(x1, y1), (x2, y2)], 1)
 
+    'Create rectangle with default grid blocksize.'
+    def grid_rect(self, i, j):
+        return Rect(Rect(i * self.blockSize, j * self.blockSize, self.blockSize, self.blockSize))
+
 
     'Update map in every iteration'
     def update(self):
@@ -149,24 +154,19 @@ class Map:
 
                 # Grid object empty.
                 if j == 0:
-                    rect = Rect(index_i * self.blockSize, index_j * self.blockSize, self.blockSize, self.blockSize)
+                    rect = self.grid_rect(index_i, index_j)
                     pygame.draw.rect(self.window, ((255, 255, 204)), rect, 1)
 
                 # Grid object building and not active.
                 if str(type(j)) == "<class 'building.Building'>":
 
                     myimage = self.sprite_list["tent"]
-                    imagerect = Rect(index_i * self.blockSize,
-                                               index_j * self.blockSize,
-                                               self.blockSize,
-                                               self.blockSize
-                                               )
-
+                    imagerect = self.grid_rect(index_i, index_j)
                     self.window.blit(myimage, imagerect)
 
                 # Grid object button.
                 if j == 'b':
-                    rect = Rect(index_i * self.blockSize, index_j * self.blockSize, self.blockSize, self.blockSize)
+                    rect = self.grid_rect(index_i, index_j)
                     pygame.draw.rect(self.window, ((100, 100, 100)), rect)
                     pygame.draw.rect(self.window, ((0, 0, 0)), rect, 1)
                     dim = self.get_grid_dimensions()
@@ -182,33 +182,21 @@ class Map:
                 # Resource wood
                 if j == 'r':
                     myimage = self.sprite_list["resource_1"]
-                    imagerect = Rect(index_i * self.blockSize,
-                                            index_j * self.blockSize,
-                                            self.blockSize,
-                                            self.blockSize
-                                            )
+                    imagerect = self.grid_rect(index_i, index_j)
 
                     self.window.blit(myimage, imagerect)
 
                 # Resource gold
                 if j == 'g':
                     myimage = self.sprite_list["gold"]
-                    imagerect = Rect(index_i * self.blockSize,
-                                    index_j * self.blockSize,
-                                    self.blockSize,
-                                    self.blockSize
-                                    )
+                    imagerect = self.grid_rect(index_i, index_j)
 
                     self.window.blit(myimage, imagerect)
 
-                # Resource gold
+                # Resource crystal
                 if j == 'cr':
                     myimage = self.sprite_list["crystal"]
-                    imagerect = Rect(index_i * self.blockSize,
-                                    index_j * self.blockSize,
-                                    self.blockSize,
-                                    self.blockSize
-                                    )
+                    imagerect = self.grid_rect(index_i, index_j)
 
                     self.window.blit(myimage, imagerect)
 
@@ -216,87 +204,61 @@ class Map:
                 # Grid object active building
                 if str(type(j)) == "<class 'building.Building'>" and self.active_building == j:
                     myimage = self.sprite_list["tent_selected"]
-                    imagerect = Rect(index_i * self.blockSize,
-                                            index_j * self.blockSize,
-                                            self.blockSize,
-                                            self.blockSize
-                                            )
+                    imagerect = self.grid_rect(index_i, index_j)
+
                     self.window.blit(myimage, imagerect)
 
                 # Draw panel
                 if j == 'p':
                     myimage = self.sprite_list["panel_3"]
-                    imagerect = Rect(index_i * self.blockSize,
-                                     index_j * self.blockSize,
-                                     self.blockSize,
-                                     self.blockSize
-                                     )
+                    imagerect = self.grid_rect(index_i, index_j)
                     self.window.blit(myimage, imagerect)
 
+                # Panel edge graphic.
                 if j == 'pe':
                     myimage = self.sprite_list["panel_edge"]
-                    imagerect = Rect(index_i * self.blockSize,
-                                     index_j * self.blockSize,
-                                     self.blockSize,
-                                     self.blockSize
-                                     )
+                    imagerect = self.grid_rect(index_i, index_j)
                     self.window.blit(myimage, imagerect)
 
                 # Log
                 if j == 'l':
-                    rect = Rect(index_i * self.blockSize, index_j * self.blockSize, self.blockSize, self.blockSize)
+                    rect = self.grid_rect(index_i, index_j)
                     pygame.draw.rect(self.window, ((100, 100, 100)), rect)
                     pygame.draw.rect(self.window, ((0, 0, 0)), rect, 1)
                     myimage = self.sprite_list["log"]
-                    imagerect = Rect(index_i * self.blockSize,
-                                     index_j * self.blockSize,
-                                     self.blockSize,
-                                     self.blockSize
-                                     )
+                    imagerect = self.grid_rect(index_i, index_j)
                     self.window.blit(myimage, imagerect)
 
                 # Gold panel
                 if j == 'gp':
-                    rect = Rect(index_i * self.blockSize, index_j * self.blockSize, self.blockSize, self.blockSize)
+                    rect = self.grid_rect(index_i, index_j)
                     pygame.draw.rect(self.window, ((100, 100, 100)), rect)
                     pygame.draw.rect(self.window, ((0, 0, 0)), rect, 1)
                     myimage = self.sprite_list["gold_panel"]
-                    imagerect = Rect(index_i * self.blockSize,
-                                    index_j * self.blockSize,
-                                    self.blockSize,
-                                    self.blockSize
-                                    )
+                    imagerect = self.grid_rect(index_i, index_j)
                     self.window.blit(myimage, imagerect)
 
-                # Gold panel
+                # Crystal panel
                 if j == 'cp':
-                    rect = Rect(index_i * self.blockSize, index_j * self.blockSize, self.blockSize, self.blockSize)
+                    rect = self.grid_rect(index_i, index_j)
                     pygame.draw.rect(self.window, ((100, 100, 100)), rect)
                     pygame.draw.rect(self.window, ((0, 0, 0)), rect, 1)
                     myimage = self.sprite_list["crystal_panel"]
-                    imagerect = Rect(index_i * self.blockSize,
-                                    index_j * self.blockSize,
-                                    self.blockSize,
-                                    self.blockSize
-                                    )
+                    imagerect = self.grid_rect(index_i, index_j)
                     self.window.blit(myimage, imagerect)
 
 
                 # Corner sprite.
                 if j == 'c':
-                    rect = Rect(index_i * self.blockSize, index_j * self.blockSize, self.blockSize, self.blockSize)
+                    rect = self.grid_rect(index_i, index_j)
                     pygame.draw.rect(self.window, ((100, 100, 100)), rect)
                     pygame.draw.rect(self.window, ((0, 0, 0)), rect, 1)
                     myimage = self.sprite_list["corner_1"]
-                    imagerect = Rect(index_i * self.blockSize,
-                                     index_j * self.blockSize,
-                                     self.blockSize,
-                                     self.blockSize
-                                     )
+                    imagerect = self.grid_rect(index_i, index_j)
                     self.window.blit(myimage, imagerect)
 
                 # Different panel block.
                 if j == 'c1':
-                    rect = Rect(index_i * self.blockSize, index_j * self.blockSize, self.blockSize, self.blockSize)
+                    rect = self.grid_rect(index_i, index_j)
                     pygame.draw.rect(self.window, ((100, 100, 100)), rect)
                     pygame.draw.rect(self.window, ((0, 0, 0)), rect, 1)
